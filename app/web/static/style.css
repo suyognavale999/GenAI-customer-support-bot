@@ -1,0 +1,160 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #f3f6fa;
+    color: #1f2937;
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.chat-header {
+    padding: 22px;
+    color: white;
+    background: #2563eb;
+}
+
+.chat-header h1 {
+    margin: 0 0 8px;
+}
+
+.chat-header p {
+    margin: 0;
+}
+
+.suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.suggestion {
+    padding: 8px 12px;
+    border: 1px solid #2563eb;
+    border-radius: 20px;
+    color: #2563eb;
+    background: white;
+    cursor: pointer;
+}
+
+.messages {
+    height: 480px;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f9fafb;
+}
+
+.message-wrapper {
+    margin-bottom: 16px;
+}
+
+.message {
+    width: fit-content;
+    max-width: 80%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.message.user {
+    margin-left: auto;
+    color: white;
+    background: #2563eb;
+}
+
+.message.assistant {
+    color: #1f2937;
+    background: #e5e7eb;
+}
+
+.sources {
+    max-width: 80%;
+    margin-top: 7px;
+    padding: 9px;
+    font-size: 13px;
+    border-radius: 8px;
+    background: #eef2ff;
+}
+
+.feedback {
+    margin-top: 7px;
+}
+
+.feedback button {
+    padding: 5px 9px;
+    margin-right: 5px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+
+.error-message {
+    min-height: 20px;
+    margin: 0;
+    padding: 4px 18px;
+    color: #b91c1c;
+}
+
+.chat-form {
+    display: flex;
+    gap: 10px;
+    padding: 18px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.chat-form input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+}
+
+.chat-form button {
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 8px;
+    color: white;
+    background: #2563eb;
+    cursor: pointer;
+}
+
+.chat-form button:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 0;
+    }
+
+    .chat-container {
+        min-height: 100vh;
+        border-radius: 0;
+    }
+
+    .messages {
+        height: 60vh;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+}

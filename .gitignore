@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Application data
+data/sqlite/*
+data/chroma/*
+data/uploads/*
+logs/*
+
+# Preserve directories
+!data/sqlite/.gitkeep
+!data/chroma/.gitkeep
+!data/uploads/.gitkeep
+!logs/.gitkeep
