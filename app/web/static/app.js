@@ -1,168 +1,161 @@
+// Frontend chat script (cleaned and improved)
 const form = document.getElementById("chat-form");
 const questionInput = document.getElementById("question");
 const sendButton = document.getElementById("send-button");
 const messages = document.getElementById("messages");
 const errorMessage = document.getElementById("error-message");
+const appVersionEl = document.getElementById("app-version");
 
-let sessionId = localStorage.getItem("app_session_id");
+let sessionId = localStorage.getItem("app_session_id") || null;
 
-
-function addMessage(role, content, sources = [], messageId = null) {
-    const wrapper = document.createElement("div");
-    wrapper.className = "message-wrapper";
-
-    const message = document.createElement("div");
-    message.className = `message ${role}`;
-    message.textContent = content;
-
-    wrapper.appendChild(message);
-
-    if (sources.length > 0) {
-        const sourceBox = document.createElement("div");
-        sourceBox.className = "sources";
-
-        const names = sources.map((source) => {
-            return `${source.document_name} (${source.similarity})`;
-        });
-
-        sourceBox.textContent = `Sources: ${names.join(", ")}`;
-        wrapper.appendChild(sourceBox);
-    }
-
-    if (role === "assistant" && messageId) {
-        const feedback = document.createElement("div");
-        feedback.className = "feedback";
-
-        const helpfulButton = document.createElement("button");
-        helpfulButton.textContent = "Helpful";
-
-        helpfulButton.addEventListener("click", () => {
-            submitFeedback(messageId, 1, feedback);
-        });
-
-        const unhelpfulButton = document.createElement("button");
-        unhelpfulButton.textContent = "Not helpful";
-
-        unhelpfulButton.addEventListener("click", () => {
-            submitFeedback(messageId, -1, feedback);
-        });
-
-        feedback.appendChild(helpfulButton);
-        feedback.appendChild(unhelpfulButton);
-        wrapper.appendChild(feedback);
-    }
-
-    messages.appendChild(wrapper);
-    messages.scrollTop = messages.scrollHeight;
+// Optionally set version if needed (keeps default 1.0 if not provided)
+if (window.APP_VERSION) {
+  appVersionEl.textContent = window.APP_VERSION;
 }
 
+function formatTime(date = new Date()) {
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function addMessage(role, content, sources = [], messageId = null, time = null) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "message-wrapper";
+
+  const message = document.createElement("div");
+  message.className = `message ${role}`;
+  message.textContent = content;
+  wrapper.appendChild(message);
+
+  const meta = document.createElement("div");
+  meta.className = "meta";
+  meta.textContent = time ? formatTime(new Date(time)) : formatTime();
+  message.appendChild(meta);
+
+  if (sources && sources.length > 0) {
+    const sourceBox = document.createElement("div");
+    sourceBox.className = "sources";
+
+    // If source has url, render as links
+    const lines = sources.map((s) => {
+      if (s.url) return `${s.document_name ? s.document_name : "Source"} — ` + `<a href="${s.url}" target="_blank" rel="noopener noreferrer">${s.title ?? s.document_name ?? "link"}</a> (${s.similarity ?? ""})`;
+      return `${s.document_name ?? "Source"} (${s.similarity ?? ""})`;
+    });
+
+    // Insert HTML safely: small controlled markup for links
+    sourceBox.innerHTML = `Sources:<br>${lines.join("<br>")}`;
+    wrapper.appendChild(sourceBox);
+  }
+
+  if (role === "assistant" && messageId) {
+    const feedback = document.createElement("div");
+    feedback.className = "feedback";
+    const helpfulButton = document.createElement("button");
+    helpfulButton.textContent = "Helpful";
+    helpfulButton.addEventListener("click", () => {
+      submitFeedback(messageId, 1, feedback);
+    });
+    const unhelpfulButton = document.createElement("button");
+    unhelpfulButton.textContent = "Not helpful";
+    unhelpfulButton.addEventListener("click", () => {
+      submitFeedback(messageId, -1, feedback);
+    });
+    feedback.appendChild(helpfulButton);
+    feedback.appendChild(unhelpfulButton);
+    wrapper.appendChild(feedback);
+  }
+
+  messages.appendChild(wrapper);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function showLoading() {
+  const loadingWrapper = document.createElement("div");
+  loadingWrapper.className = "message-wrapper";
+  loadingWrapper.id = "loading-message";
+
+  const loadingMessage = document.createElement("div");
+  loadingMessage.className = "message assistant";
+  loadingMessage.textContent = "Searching the app knowledge base...";
+  loadingWrapper.appendChild(loadingMessage);
+
+  messages.appendChild(loadingWrapper);
+  messages.scrollTop = messages.scrollHeight;
+}
 
 async function sendQuestion(question) {
-    errorMessage.textContent = "";
-    sendButton.disabled = true;
-    questionInput.disabled = true;
+  errorMessage.textContent = "";
+  sendButton.disabled = true;
+  questionInput.disabled = true;
 
-    addMessage("user", question);
+  addMessage("user", question, [], null);
 
-    const loadingWrapper = document.createElement("div");
-    loadingWrapper.className = "message-wrapper";
-    loadingWrapper.id = "loading-message";
+  showLoading();
 
-    const loadingMessage = document.createElement("div");
-    loadingMessage.className = "message assistant";
-    loadingMessage.textContent = "Searching the app knowledge base...";
+  try {
+    const response = await fetch("/api/v1/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: question, session_id: sessionId }),
+    });
 
-    loadingWrapper.appendChild(loadingMessage);
-    messages.appendChild(loadingWrapper);
-
-    try {
-        const response = await fetch("/api/v1/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                question: question,
-                session_id: sessionId,
-            }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(
-                data.error?.message || "Unable to get an answer."
-            );
-        }
-
-        sessionId = data.session_id;
-
-        localStorage.setItem(
-            "app_session_id",
-            sessionId
-        );
-
-        document.getElementById("loading-message")?.remove();
-
-        addMessage(
-            "assistant",
-            data.answer,
-            data.sources,
-            data.message_id
-        );
-    } catch (error) {
-        document.getElementById("loading-message")?.remove();
-        errorMessage.textContent = error.message;
-    } finally {
-        sendButton.disabled = false;
-        questionInput.disabled = false;
-        questionInput.focus();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error?.message || "Unable to get an answer.");
     }
-}
 
+    sessionId = data.session_id;
+    localStorage.setItem("app_session_id", sessionId);
+
+    document.getElementById("loading-message")?.remove();
+
+    addMessage("assistant", data.answer || "No answer returned.", data.sources || [], data.message_id || null, data.timestamp || null);
+  } catch (error) {
+    document.getElementById("loading-message")?.remove();
+    errorMessage.textContent = error.message || "Something went wrong.";
+  } finally {
+    sendButton.disabled = false;
+    questionInput.disabled = false;
+    questionInput.focus();
+  }
+}
 
 async function submitFeedback(messageId, rating, feedbackBox) {
-    try {
-        const response = await fetch("/api/v1/chat/feedback", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                message_id: messageId,
-                rating: rating,
-            }),
-        });
+  try {
+    const response = await fetch("/api/v1/chat/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message_id: messageId, rating: rating }),
+    });
 
-        if (!response.ok) {
-            throw new Error("Unable to submit feedback.");
-        }
-
-        feedbackBox.textContent = "Thank you for your feedback.";
-    } catch (error) {
-        errorMessage.textContent = error.message;
-    }
+    if (!response.ok) throw new Error("Unable to submit feedback.");
+    feedbackBox.textContent = "Thank you for your feedback.";
+  } catch (err) {
+    errorMessage.textContent = err.message || "Could not submit feedback.";
+  }
 }
 
-
 form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const question = questionInput.value.trim();
-
-    if (!question) {
-        return;
-    }
-
-    questionInput.value = "";
-
-    await sendQuestion(question);
+  event.preventDefault();
+  const question = questionInput.value.trim();
+  if (!question) return;
+  questionInput.value = "";
+  await sendQuestion(question);
 });
 
-
+// suggestions
 document.querySelectorAll(".suggestion").forEach((button) => {
-    button.addEventListener("click", async () => {
-        const question = button.dataset.question;
-        await sendQuestion(question);
-    });
+  button.addEventListener("click", async () => {
+    const question = button.dataset.question;
+    questionInput.value = question;
+    // small delay to show input
+    setTimeout(() => form.dispatchEvent(new Event("submit", { cancelable: true })), 50);
+  });
+});
+
+// submit on Enter when not composing
+questionInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    form.dispatchEvent(new Event("submit", { cancelable: true }));
+  }
 });

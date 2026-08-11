@@ -1,86 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GenAI Customer Support Bot</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+  <!-- Optional: Google font (remove if you prefer no external requests) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <title>app Support Bot</title>
-
-    /static/style.css
+  <link rel="stylesheet" href="/static/style.css" />
 </head>
-
 <body>
-    <main class="chat-container">
-        <header class="chat-header">
-            <h1>app Support Bot</h1>
+  <div class="page">
+    <header class="site-header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🤖</div>
+        <div>
+          <h1>GenAI Customer Support Bot</h1>
+          <p class="subtitle">Ask about KPI creation, datasources, imports and troubleshooting.</p>
+        </div>
+      </div>
+    </header>
 
-            <p>
-                Ask questions about KPI creation,
-                datasources, imports and troubleshooting.
-            </p>
-        </header>
+    <main class="chat-container" role="main">
+      <aside class="panel suggestions" aria-label="Suggested questions">
+        <h2>Try a suggestion</h2>
+        <div class="suggestion-list">
+          <button class="suggestion" data-question="How do I create a KPI report?">Create KPI Report</button>
+          <button class="suggestion" data-question="How do I enable Custom Logic Builder?">Ask General Query about the application?</button>
+          <button class="suggestion" data-question="How do I import datasource data?">Import DataTable Data</button>
+        </div>
+      </aside>
 
-        <section class="suggestions">
-            <button
-                class="suggestion"
-                data-question="How do I create a KPI report?"
-            >
-                Create KPI report
-            </button>
+      <section class="chat" aria-live="polite" aria-label="Chat messages">
+        <div id="messages" class="messages">
+          <div class="message-wrapper initial">
+            <div class="message assistant">Hello. How can I help you?</div>
+          </div>
+        </div>
 
-            <button
-                class="suggestion"
-                data-question="How do I enable Custom Logic Builder?"
-            >
-                Enable Custom Logic Builder
-            </button>
+        <p id="error-message" class="error-message" role="status" aria-live="polite"></p>
 
-            <button
-                class="suggestion"
-                data-question="How do I import datasource data?"
-            >
-                Import datasource data
-            </button>
-        </section>
-
-        <section
-            id="messages"
-            class="messages"
-            aria-live="polite"
-        >
-            <div class="message assistant">
-                Hello. How can I help with the application?
-            </div>
-        </section>
-
-        <p
-            id="error-message"
-            class="error-message"
-        ></p>
-
-        <form id="chat-form" class="chat-form">
-            <input
-                id="question"
-                type="text"
-                maxlength="1000"
-                placeholder="Ask a app question..."
-                autocomplete="off"
-                required
-            >
-
-            <button
-                id="send-button"
-                type="submit"
-            >
-                Send
-            </button>
+        <form id="chat-form" class="chat-form" aria-label="Ask a question">
+          <input id="question" type="text" maxlength="1000" placeholder="Ask a KCT question..." autocomplete="off" required />
+          <button id="send-button" type="submit">Send</button>
         </form>
+      </section>
     </main>
 
-    /static/app.jsscript>
+    <footer class="site-footer" aria-hidden="true">
+      <div class="footer-inner">
+        <span>Author <strong>@Suyog Navale</strong> - All rights reserved</span>
+        <small class="version">v<span id="app-version">1.0</span></small>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
 </body>
 </html>
