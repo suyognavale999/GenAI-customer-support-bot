@@ -16,8 +16,7 @@ from app.services.text_extraction_service import (
     TextExtractionService,
 )
 
-MAX_FILE_SIZE = 5 * 1024 * 1024
-
+MAX_FILE_SIZE = 10 * 1024 * 1024
 
 class DocumentService:
     def __init__(self, database: Session):
@@ -49,7 +48,7 @@ class DocumentService:
             await uploaded_file.close()
 
             raise ApplicationException(
-                message="Maximum allowed file size is 5 MB.",
+                message="Maximum allowed file size is 10 MB.",
                 status_code=413,
                 error_code="FILE_TOO_LARGE",
             )
