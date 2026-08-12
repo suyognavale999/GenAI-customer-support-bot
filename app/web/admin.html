@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Document Bot Admin</title>
+
+    /static/style.css
+</head>
+
+<body>
+    <main class="admin-container">
+
+        <header class="admin-header">
+            <div>
+                <h1>Document Bot Admin</h1>
+
+                <p>
+                    Manage documents used by the Q&A bot.
+                </p>
+            </div>
+
+            /
+                Open Chat
+            </a>
+        </header>
+
+        <section
+            id="login-section"
+            class="admin-card"
+        >
+            <h2>Admin Login</h2>
+
+            <form id="login-form">
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    id="username"
+                    type="text"
+                    value="admin"
+                    required
+                >
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    id="password"
+                    type="password"
+                    required
+                >
+
+                <button type="submit">
+                    Login
+                </button>
+            </form>
+        </section>
+
+        <section
+            id="dashboard-section"
+            class="hidden"
+        >
+            <div class="dashboard-toolbar">
+                <p>
+                    Logged in as:
+                    <strong id="current-user"></strong>
+                </p>
+
+                <button
+                    id="logout-button"
+                    class="danger-button"
+                >
+                    Logout
+                </button>
+            </div>
+
+            <section class="admin-card">
+                <h2>Upload Document</h2>
+
+                <p>
+                    Supported files: PDF, DOCX, TXT and MD.
+                    Maximum size: 5 MB.
+                </p>
+
+                <form id="upload-form">
+                    <input
+                        id="document-file"
+                        type="file"
+                        accept=".pdf,.docx,.txt,.md"
+                        required
+                    >
+
+                    <button type="submit">
+                        Upload
+                    </button>
+                </form>
+            </section>
+
+            <section class="admin-card">
+                <div class="section-heading">
+                    <h2>Knowledge Documents</h2>
+
+                    <button
+                        id="refresh-button"
+                        type="button"
+                    >
+                        Refresh
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Document</th>
+                                <th>Status</th>
+                                <th>Size</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="document-list">
+                            <tr>
+                                <td colspan="5">
+                                    No documents loaded.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+
+        <p
+            id="admin-message"
+            class="admin-message"
+        ></p>
+
+    </main>
+
+    /static/admin.jsscript>
+</body>
+</html>

@@ -39,9 +39,8 @@ class RAGService:
         if not matches:
             return {
                 "answer": (
-                    "The app knowledge base does not "
-                    "contain enough information to "
-                    "answer this question."
+                    "The uploaded documents do not contain "
+                    "enough information to answer this question."
                 ),
                 "sources": [],
             }

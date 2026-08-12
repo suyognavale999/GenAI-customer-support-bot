@@ -79,4 +79,12 @@ app.include_router(
 )
 
 
+@app.get(
+    "/admin",
+    include_in_schema=False,
+)
+def admin_page():
+    return FileResponse("app/web/admin.html")
+
+
 register_exception_handlers(app)

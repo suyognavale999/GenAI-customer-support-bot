@@ -120,3 +120,315 @@ html,body { height: 100%; margin: 0; background: var(--bg); color: #111827; }
   .chat { order:1; }
   .messages { height:52vh; }
 }
+/* =========================
+   Admin Dashboard
+========================= */
+
+.hidden {
+    display: none !important;
+}
+
+.admin-container {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* Admin header */
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    color: white;
+    background: linear-gradient(
+        90deg,
+        #1d4ed8,
+        #3b82f6
+    );
+    box-shadow:
+        0 8px 30px
+        rgba(37, 99, 235, 0.14);
+}
+
+.admin-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.admin-header p {
+    margin: 7px 0 0;
+    font-size: 14px;
+    opacity: 0.95;
+}
+
+.nav-link {
+    flex-shrink: 0;
+    padding: 10px 15px;
+    border-radius: 8px;
+    color: #1d4ed8;
+    background: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.nav-link:hover {
+    background: #eff6ff;
+}
+
+/* Admin cards */
+
+.admin-card {
+    padding: 22px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: white;
+    box-shadow:
+        0 6px 20px
+        rgba(15, 23, 42, 0.06);
+}
+
+.admin-card h2 {
+    margin: 0 0 16px;
+    color: #111827;
+    font-size: 19px;
+}
+
+.admin-card p {
+    color: #64748b;
+    line-height: 1.5;
+}
+
+/* Admin forms */
+
+.admin-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-card label {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin-card input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+}
+
+.admin-card input:focus {
+    border-color: #2563eb;
+    outline: 3px solid
+        rgba(37, 99, 235, 0.12);
+}
+
+.admin-card button,
+.dashboard-toolbar button,
+.section-heading button {
+    padding: 9px 14px;
+    border: 0;
+    border-radius: 8px;
+    color: white;
+    background: #2563eb;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.admin-card button:hover,
+.dashboard-toolbar button:hover,
+.section-heading button:hover {
+    background: #1d4ed8;
+}
+
+.admin-card form button {
+    align-self: flex-start;
+    margin-top: 6px;
+}
+
+/* Dashboard toolbar */
+
+.dashboard-toolbar,
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.dashboard-toolbar {
+    padding: 14px 18px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    background: white;
+    box-shadow:
+        0 4px 14px
+        rgba(15, 23, 42, 0.05);
+}
+
+.dashboard-toolbar p {
+    margin: 0;
+}
+
+.section-heading {
+    margin-bottom: 14px;
+}
+
+.section-heading h2 {
+    margin: 0;
+}
+
+/* Buttons */
+
+.danger-button {
+    background: #dc2626 !important;
+}
+
+.danger-button:hover {
+    background: #b91c1c !important;
+}
+
+/* Document table */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    color: #334155;
+    background: #f8fafc;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+td {
+    color: #334155;
+    font-size: 14px;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+tbody tr:hover {
+    background: #fafcff;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 7px;
+}
+
+/* Document status */
+
+.status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    color: #475569;
+    background: #e2e8f0;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status-ready {
+    color: #1e40af;
+    background: #dbeafe;
+}
+
+.status-indexed {
+    color: #166534;
+    background: #dcfce7;
+}
+
+.status-pending {
+    color: #92400e;
+    background: #fef3c7;
+}
+
+/* Admin messages */
+
+.admin-message {
+    display: none;
+    padding: 11px 14px;
+    margin-top: 12px;
+    border-radius: 8px;
+}
+
+.admin-message:not(:empty) {
+    display: block;
+}
+
+.admin-message.success {
+    color: #166534;
+    background: #dcfce7;
+}
+
+.admin-message.error {
+    color: #991b1b;
+    background: #fee2e2;
+}
+
+/* Mobile responsiveness */
+
+@media (max-width: 600px) {
+    .admin-container {
+        padding: 10px;
+    }
+
+    .admin-header,
+    .dashboard-toolbar,
+    .section-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-header {
+        padding: 18px;
+    }
+
+    .nav-link {
+        text-align: center;
+    }
+
+    .admin-card {
+        padding: 16px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .admin-card form button {
+        width: 100%;
+    }
+}

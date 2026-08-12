@@ -34,25 +34,23 @@ class LLMService:
             )
 
         system_prompt = (
-            "You are a customer support assistant for the "
-            "app KPI Creating Interface.\n\n"
-            "Answer only from the supplied app context.\n\n"
+            "You are a document-based customer support assistant.\n\n"
+            "Answer only from the supplied document context.\n\n"
             "Rules:\n"
-            "1. Do not invent app features, commands, or database details.\n"
-            "2. Give short, practical, developer-friendly answers.\n"
-            "3. Preserve command names and technical terms.\n"
+            "1. Do not invent information.\n"
+            "2. Give clear, practical, and concise answers.\n"
+            "3. Preserve technical terms, commands, and names.\n"
             "4. Never expose passwords, API keys, or secrets.\n"
-            "5. If the context is insufficient, say that the app "
-            "knowledge base does not contain enough information."
+            "5. If the context is insufficient, say that the "
+            "uploaded documents do not contain enough information."
         )
 
         user_prompt = (
-            "app CONTEXT:\n\n"
+            "DOCUMENT CONTEXT:\n\n"
             + context
             + "\n\nUSER QUESTION:\n\n"
             + question
         )
-
         try:
             response = self.client.chat.completions.create(
                 model=settings.llm_model,
@@ -72,9 +70,7 @@ class LLMService:
             answer = response.choices[0].message.content
 
             if not answer:
-                raise ValueError(
-                    "The LLM returned an empty response."
-                )
+                raise ValueError("The LLM returned an empty response.")
 
             return answer.strip()
 
