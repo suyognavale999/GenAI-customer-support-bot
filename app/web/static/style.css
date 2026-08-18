@@ -29,6 +29,7 @@ html,body { height: 100%; margin: 0; background: var(--bg); color: #111827; }
   padding:18px; border-radius:14px; color: white;
   box-shadow: 0 8px 30px rgba(37,99,235,0.12);
 }
+.site-header .brand .nav-link {margin-left: auto;}
 .site-header .logo { font-size:28px; width:52px; height:52px; display:flex; align-items:center; justify-content:center; border-radius:10px; background: rgba(255,255,255,0.08); }
 .site-header h1 { margin:0; font-size:20px; font-weight:600; }
 .site-header .subtitle { margin:0; font-size:13px; opacity:0.95; }

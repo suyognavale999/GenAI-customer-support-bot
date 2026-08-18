@@ -2,14 +2,15 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>GenAI Customer Support Bot</title>
 
-    <!-- Optional: Google font (remove if you prefer no external requests) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="/static/style.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+        rel="stylesheet"
+    >
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
@@ -17,47 +18,84 @@
         <header class="site-header">
             <div class="brand">
                 <div class="logo" aria-hidden="true">🤖</div>
+
                 <div>
                     <h1>GenAI Customer Support Bot</h1>
-                    <p>
-                        Upload documents and ask questions based on their content.</p>
+                    <p>Upload documents and ask questions based on their content.</p>
                 </div>
+
+                <a href="/admin" class="nav-link">Admin Login</a>
             </div>
         </header>
 
         <main class="chat-container" role="main">
             <aside class="panel suggestions" aria-label="Suggested questions">
                 <h2>Try a suggestion</h2>
+
                 <div class="suggestion-list">
-                    <button class="suggestion" data-question="How do I create a KPI report?">Create KPI Report</button>
-                    <button class="suggestion" data-question="How do I enable Custom Logic Builder?">Ask General Query
-                        about the application?</button>
-                    <button class="suggestion" data-question="How do I import datasource data?">Import DataTable
-                        Data</button>
+                    <button
+                        class="suggestion"
+                        data-question="How do I create a KPI report?"
+                    >
+                        Create KPI Report
+                    </button>
+
+                    <button
+                        class="suggestion"
+                        data-question="How do I enable Custom Logic Builder?"
+                    >
+                        Ask General Query about the application?
+                    </button>
+
+                    <button
+                        class="suggestion"
+                        data-question="How do I import datasource data?"
+                    >
+                        Import DataTable Data
+                    </button>
                 </div>
             </aside>
 
             <section class="chat" aria-live="polite" aria-label="Chat messages">
                 <div id="messages" class="messages">
                     <div class="message-wrapper initial">
-                        <div class="message assistant">Hello. How can I help you?</div>
+                        <div class="message assistant">
+                            Hello. How can I help you?
+                        </div>
                     </div>
                 </div>
 
-                <p id="error-message" class="error-message" role="status" aria-live="polite"></p>
+                <p
+                    id="error-message"
+                    class="error-message"
+                    role="status"
+                    aria-live="polite"
+                ></p>
 
                 <form id="chat-form" class="chat-form" aria-label="Ask a question">
-                    <input id="question" type="text" maxlength="1000" placeholder="Ask a question..." autocomplete="off"
-                        required />
+                    <input
+                        id="question"
+                        type="text"
+                        maxlength="1000"
+                        placeholder="Ask a question..."
+                        autocomplete="off"
+                        required
+                    >
+
                     <button id="send-button" type="submit">Send</button>
                 </form>
             </section>
         </main>
 
-        <footer class="site-footer" aria-hidden="true">
+        <footer class="site-footer">
             <div class="footer-inner">
-                <span>Author <strong>@Suyog Navale</strong> - All rights reserved</span>
-                <small class="version">v<span id="app-version">1.0</span></small>
+                <span>
+                    Author <strong>@Suyog Navale</strong> - All rights reserved
+                </span>
+
+                <small class="version">
+                    v<span id="app-version">1.0</span>
+                </small>
             </div>
         </footer>
     </div>

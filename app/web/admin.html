@@ -2,82 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Bot Admin</title>
-
-    /static/style.css
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
     <main class="admin-container">
-
         <header class="admin-header">
             <div>
                 <h1>Document Bot Admin</h1>
-
-                <p>
-                    Manage documents used by the Q&A bot.
-                </p>
+                <p>Manage documents used by the Q&amp;A bot.</p>
             </div>
 
-            /
-                Open Chat
-            </a>
+            <a href="/" class="nav-link">Open Chat</a>
         </header>
 
-        <section
-            id="login-section"
-            class="admin-card"
-        >
+        <section id="login-section" class="admin-card">
             <h2>Admin Login</h2>
 
             <form id="login-form">
-                <label for="username">
-                    Username
-                </label>
-
+                <label for="username">Username</label>
                 <input
                     id="username"
+                    name="username"
                     type="text"
                     value="admin"
+                    autocomplete="username"
                     required
                 >
 
-                <label for="password">
-                    Password
-                </label>
-
+                <label for="password">Password</label>
                 <input
                     id="password"
+                    name="password"
                     type="password"
+                    autocomplete="current-password"
                     required
                 >
 
-                <button type="submit">
-                    Login
-                </button>
+                <button type="submit">Login</button>
             </form>
         </section>
 
-        <section
-            id="dashboard-section"
-            class="hidden"
-        >
+        <section id="dashboard-section" class="hidden">
             <div class="dashboard-toolbar">
                 <p>
                     Logged in as:
                     <strong id="current-user"></strong>
                 </p>
 
-                <button
-                    id="logout-button"
-                    class="danger-button"
-                >
+                <button id="logout-button" class="danger-button" type="button">
                     Logout
                 </button>
             </div>
@@ -93,27 +68,20 @@
                 <form id="upload-form">
                     <input
                         id="document-file"
+                        name="file"
                         type="file"
                         accept=".pdf,.docx,.txt,.md"
                         required
                     >
 
-                    <button type="submit">
-                        Upload
-                    </button>
+                    <button type="submit">Upload</button>
                 </form>
             </section>
 
             <section class="admin-card">
                 <div class="section-heading">
                     <h2>Knowledge Documents</h2>
-
-                    <button
-                        id="refresh-button"
-                        type="button"
-                    >
-                        Refresh
-                    </button>
+                    <button id="refresh-button" type="button">Refresh</button>
                 </div>
 
                 <div class="table-wrapper">
@@ -130,9 +98,7 @@
 
                         <tbody id="document-list">
                             <tr>
-                                <td colspan="5">
-                                    No documents loaded.
-                                </td>
+                                <td colspan="5">No documents loaded.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -143,10 +109,11 @@
         <p
             id="admin-message"
             class="admin-message"
+            role="status"
+            aria-live="polite"
         ></p>
-
     </main>
 
-    /static/admin.jsscript>
+    <script src="/static/admin.js"></script>
 </body>
 </html>
