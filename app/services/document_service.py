@@ -16,6 +16,9 @@ from app.services.text_extraction_service import (
     TextExtractionService,
 )
 
+import logging
+logger = logging.getLogger(__name__)
+
 MAX_FILE_SIZE = 10 * 1024 * 1024
 
 class DocumentService:
@@ -96,7 +99,14 @@ class DocumentService:
             )
 
             saved_document = self.repository.create(document)
-
+            
+            logger.info(
+                "Indexing document id=%s, extracted_chars=%s",
+                saved_document.id,
+                len(saved_document.extracted_text),
+            )
+            
+            RAGService().index_document(saved_document)
             return saved_document
 
         except Exception:
@@ -105,6 +115,25 @@ class DocumentService:
 
         finally:
             await uploaded_file.close()
+            
+    def index_document(self, document_id: int):
+        document = self.repository.get_by_id(document_id)
+
+        if document is None:
+            raise ApplicationException(
+                message="Document not found.",
+                status_code=404,
+                error_code="DOCUMENT_NOT_FOUND",
+            )
+
+        if not document.extracted_text:
+            raise ApplicationException(
+                message="Document contains no extracted text.",
+                status_code=400,
+                error_code="EMPTY_DOCUMENT_TEXT",
+            )
+
+        return RAGService().index_document(document)
 
     def list_documents(self):
         return self.repository.get_all()

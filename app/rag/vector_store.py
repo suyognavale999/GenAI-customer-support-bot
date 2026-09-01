@@ -13,18 +13,12 @@ class VectorStore:
         )
 
         self.client = chromadb.PersistentClient(
-            path=str(
-                settings.chroma_persist_directory
-            )
+            path=str(settings.chroma_persist_directory)
         )
 
-        self.collection = (
-            self.client.get_or_create_collection(
-                name=settings.chroma_collection_name,
-                metadata={
-                    "hnsw:space": "cosine"
-                },
-            )
+        self.collection = self.client.get_or_create_collection(
+            name=settings.chroma_collection_name,
+            metadata={"hnsw:space": "cosine"},
         )
 
     def add_document(
@@ -46,14 +40,13 @@ class VectorStore:
         metadata_list = []
 
         for index, chunk in enumerate(chunks):
-            chunk_id = (
-                f"document-{document_id}-chunk-{index}"
-            )
+            chunk_id = f"document-{document_id}-chunk-{index}"
 
             chunk_metadata = {
                 "document_id": document_id,
                 "document_name": document_name,
                 "chunk_index": index,
+                "page_number": page_number,
             }
 
             chunk_ids.append(chunk_id)
@@ -127,11 +120,7 @@ class VectorStore:
         return matches
 
     def delete_document(self, document_id):
-        self.collection.delete(
-            where={
-                "document_id": document_id
-            }
-        )
+        self.collection.delete(where={"document_id": document_id})
 
     def count(self):
         return self.collection.count()

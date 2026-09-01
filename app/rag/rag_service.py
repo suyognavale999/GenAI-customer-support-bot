@@ -37,11 +37,13 @@ class RAGService:
         )
 
         if not matches:
+            answer = LLMService().generate_answer(
+                question=question,
+                context=None,
+            )
+
             return {
-                "answer": (
-                    "The uploaded documents do not contain "
-                    "enough information to answer this question."
-                ),
+                "answer": answer,
                 "sources": [],
             }
 
@@ -75,6 +77,7 @@ class RAGService:
                     "similarity": (
                         match["similarity"]
                     ),
+                    "page_number": metadata.get("page_number"),
                 }
             )
 

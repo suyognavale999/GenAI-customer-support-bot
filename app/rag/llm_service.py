@@ -3,6 +3,10 @@ from openai import OpenAI
 from app.core.config import settings
 from app.core.exceptions import ApplicationException
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class LLMService:
 
@@ -32,25 +36,33 @@ class LLMService:
                 status_code=503,
                 error_code="LLM_MODEL_NOT_CONFIGURED",
             )
+        
+        if context:
+            system_prompt = (
+                "You are a document-based customer support assistant.\n"
+                "Answer from the supplied document context.\n"
+                "Do not invent information.\n"
+                "Return well-structured plain text.\n"
+                "Use headings and numbered points where appropriate.\n"
+                "Do not use Markdown symbols such as *, **, ###, or backticks."
+            )
 
-        system_prompt = (
-            "You are a document-based customer support assistant.\n\n"
-            "Answer only from the supplied document context.\n\n"
-            "Rules:\n"
-            "1. Do not invent information.\n"
-            "2. Give clear, practical, and concise answers.\n"
-            "3. Preserve technical terms, commands, and names.\n"
-            "4. Never expose passwords, API keys, or secrets.\n"
-            "5. If the context is insufficient, say that the "
-            "uploaded documents do not contain enough information."
-        )
+            user_prompt = (
+                "DOCUMENT CONTEXT:\n\n"
+                + context
+                + "\n\nUSER QUESTION:\n\n"
+                + question
+            )
+        else:
+            system_prompt = (
+                "You are a helpful AI assistant.\n"
+                "Answer general questions using your knowledge.\n"
+                "Give clear, concise, and well-structured answers.\n"
+                "Do not use Markdown symbols such as *, **, ###, or backticks."
+            )
 
-        user_prompt = (
-            "DOCUMENT CONTEXT:\n\n"
-            + context
-            + "\n\nUSER QUESTION:\n\n"
-            + question
-        )
+            user_prompt = question
+        
         try:
             response = self.client.chat.completions.create(
                 model=settings.llm_model,
@@ -78,6 +90,13 @@ class LLMService:
             raise
 
         except Exception as exception:
+            logger.exception(
+                "LLM request failed: model=%s, base_url=%s, error=%s",
+                settings.llm_model,
+                settings.llm_base_url,
+                str(exception),
+            )
+
             raise ApplicationException(
                 message="Unable to generate the answer.",
                 status_code=502,

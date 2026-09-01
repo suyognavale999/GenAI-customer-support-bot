@@ -23,7 +23,18 @@ function addMessage(role, content, sources = [], messageId = null, time = null) 
 
   const message = document.createElement("div");
   message.className = `message ${role}`;
-  message.textContent = content;
+  // message.textContent = content;
+  if (role === "assistant" && (!sources || sources.length === 0)) {
+    const notice = document.createElement("strong");
+    notice.className = "ai-notice";
+    notice.textContent = "No relevant document content found. Answer generated using general AI knowledge.";
+    message.appendChild(notice);
+  }
+
+  const answerText = document.createElement("div");
+  answerText.textContent = content;
+  message.appendChild(answerText);
+
   wrapper.appendChild(message);
 
   const meta = document.createElement("div");
@@ -31,18 +42,18 @@ function addMessage(role, content, sources = [], messageId = null, time = null) 
   meta.textContent = time ? formatTime(new Date(time)) : formatTime();
   message.appendChild(meta);
 
+
   if (sources && sources.length > 0) {
     const sourceBox = document.createElement("div");
     sourceBox.className = "sources";
 
-    // If source has url, render as links
-    const lines = sources.map((s) => {
-      if (s.url) return `${s.document_name ? s.document_name : "Source"} — ` + `<a href="${s.url}" target="_blank" rel="noopener noreferrer">${s.title ?? s.document_name ?? "link"}</a> (${s.similarity ?? ""})`;
-      return `${s.document_name ?? "Source"} (${s.similarity ?? ""})`;
-    });
+    sourceBox.innerHTML = `
+  <strong>Sources: </strong>
+  <div>${sources.map((source) =>
+      `${source.document_name} | Relevance: ${(source.similarity * 100).toFixed(1)}%`
+    ).join("<br>")}</div>
+`;
 
-    // Insert HTML safely: small controlled markup for links
-    sourceBox.innerHTML = `Sources:<br>${lines.join("<br>")}`;
     wrapper.appendChild(sourceBox);
   }
 

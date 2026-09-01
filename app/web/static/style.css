@@ -36,10 +36,10 @@ html,body { height: 100%; margin: 0; background: var(--bg); color: #111827; }
 
 /* Main container */
 .chat-container {
-  width:100%;
-  max-width:var(--max-width);
-  display:grid;
-  grid-template-columns: 300px 1fr; /* left column slightly wider */
+  width: 100%;
+  max-width: var(--max-width);
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--gap);
   background: transparent;
 }
@@ -432,4 +432,33 @@ tbody tr:hover {
     .admin-card form button {
         width: 100%;
     }
+}
+.ai-notice {
+  display: block;
+  color: #111827;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.message-wrapper {
+  width: fit-content;
+  max-width: 80%;
+}
+
+.message-wrapper:has(.message.user) {
+  align-self: flex-end;
+}
+
+.message-wrapper:has(.message.assistant) {
+  align-self: flex-start;
+}
+
+.message {
+  width: fit-content;
+  max-width: 100%;
+}
+.sources {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 10px;
+  line-height: 1.6;
 }
